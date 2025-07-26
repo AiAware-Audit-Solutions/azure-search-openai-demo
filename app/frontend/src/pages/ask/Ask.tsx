@@ -289,13 +289,8 @@ export function Component(): JSX.Element {
                     {showUserUpload && <UploadFile className={styles.commandButton} disabled={!loggedIn} />}
                     <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                 </div>
-                <div className={styles.askTitleRow}>
-                    <h1 className={styles.askTitle}>{t("askTitle")}</h1>
-                    <img src={appLogo} alt="App logo" width="48" height="48" className={styles.appLogoInline} />
-                </div>
+                <h1 className={styles.askTitle}>{t("askTitle")}</h1>
                 <p className={styles.askEmptyStateSubtitle}>{t("askSubtitle")}</p>
-                {/* <p className={styles.askEmptyStateSubtitle}>{t("askSubtitle")}</p>
-                <img src={appLogo} alt="App logo" width="120" height="120" /> */}
                 <div className={styles.askQuestionInput}>
                     <QuestionInput
                         placeholder={t("gpt4vExamples.placeholder")}
