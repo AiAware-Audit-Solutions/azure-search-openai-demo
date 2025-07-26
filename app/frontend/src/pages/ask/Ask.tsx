@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { Panel, DefaultButton, Spinner } from "@fluentui/react";
+import appLogo from "../../assets/applogo.svg";
 
 import styles from "./Ask.module.css";
 
@@ -288,7 +289,13 @@ export function Component(): JSX.Element {
                     {showUserUpload && <UploadFile className={styles.commandButton} disabled={!loggedIn} />}
                     <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                 </div>
-                <h1 className={styles.askTitle}>{t("askTitle")}</h1>
+                <div className={styles.askTitleRow}>
+                    <h1 className={styles.askTitle}>{t("askTitle")}</h1>
+                    <img src={appLogo} alt="App logo" width="48" height="48" className={styles.appLogoInline} />
+                </div>
+                <p className={styles.askEmptyStateSubtitle}>{t("askSubtitle")}</p>
+                {/* <p className={styles.askEmptyStateSubtitle}>{t("askSubtitle")}</p>
+                <img src={appLogo} alt="App logo" width="120" height="120" /> */}
                 <div className={styles.askQuestionInput}>
                     <QuestionInput
                         placeholder={t("gpt4vExamples.placeholder")}

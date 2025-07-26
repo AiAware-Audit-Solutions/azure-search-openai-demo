@@ -28,6 +28,23 @@
     margin-top: 0;
 }
 
+.askEmptyStateSubtitle {
+    font-weight: 600;
+    margin-bottom: 0.625rem;
+}
+
+.askTitleRow {
+    display: flex;
+    align-items: center;
+}
+
+.appLogoInline {
+    vertical-align: middle;
+    position: relative;
+    top: 1.5rem;
+    /* Optionally adjust size or margin */
+}
+
 .askQuestionInput {
     padding: 1rem;
     width: 100%;

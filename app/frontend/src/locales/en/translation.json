@@ -1,6 +1,6 @@
 {
-    "pageTitle": "Azure OpenAI + AI Search",
-    "headerTitle": "Azure OpenAI + AI Search",
+    "pageTitle": "Introducing Auditor's Oversight",
+    "headerTitle": "Ai Aware Oversight",
     "chat": "Chat",
     "qa": "Ask a question",
     "login": "Login",
@@ -34,20 +34,21 @@
     },
     "developerSettings": "Developer settings",
 
-    "chatEmptyStateTitle": "Chat with your data",
-    "chatEmptyStateSubtitle": "Ask anything or try an example",
+    "chatEmptyStateTitle": "Chat with Oversight",
+    "chatEmptyStateSubtitle": "Instant answers and in-depth discussions, powered by AiAware",
     "defaultExamples": {
-        "1": "What is included in my Northwind Health Plus plan that is not in standard?",
-        "2": "What happens in a performance review?",
-        "3": "What does a Product Manager do?",
-        "placeholder": "Type a new question (e.g. does my plan cover annual eye exams?)"
+        "1": "Question Prompt A?",
+        "2": "Question Prompt B?",
+        "3": "Question Prompt C?",
+        "placeholder": "Type a new question (e.g. steps for conducting an internal audit?)"
     },
-    "askTitle": "Ask your data",
+    "askTitle": "Ask Away",
+    "askSubtitle": "Instant answers from federal policies, audits, and evaluations",
     "gpt4vExamples": {
         "1": "Compare the impact of interest rates and GDP in financial markets.",
         "2": "What is the expected trend for the S&P 500 index over the next five years? Compare it to the past S&P 500 performance",
         "3": "Can you identify any correlation between oil prices and stock market trends?",
-        "placeholder": "Example: Does my plan cover annual eye exams?"
+        "placeholder": "Example: What are the steps for conducting an internal audit?"
     },
     "generatingAnswer": "Generating answer",
     "citationWithColon": "Citation:",

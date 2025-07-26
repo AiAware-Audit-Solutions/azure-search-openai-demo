@@ -19,9 +19,10 @@
 }
 
 .headerTitleContainer {
+    font-style: italic;
     display: flex;
     align-items: center;
-    color: #f2f2f2;
+    color: #599fff;
     text-decoration: none;
 }
 
