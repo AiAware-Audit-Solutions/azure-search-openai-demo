@@ -16,6 +16,7 @@ from approaches.approach import DataPoints, ExtraInfo, ThoughtStep
 from approaches.chatapproach import ChatApproach
 from approaches.promptmanager import PromptManager
 from core.authentication import AuthenticationHelper
+from prepdocslib.textsplitter import SentenceTextSplitter
 
 
 class ChatReadRetrieveReadApproach(ChatApproach):
@@ -279,3 +280,6 @@ class ChatReadRetrieveReadApproach(ChatApproach):
             ],
         )
         return extra_info
+
+    # Example: Set chunk size to 800 tokens
+    splitter = SentenceTextSplitter(max_tokens_per_section=800)
