@@ -9,4 +9,6 @@ if [ $# -gt 0 ]; then
   additionalArgs="$@"
 fi
 
-./.venv/bin/python ./app/backend/prepdocs.py './data/*' --verbose $additionalArgs
+DATA_DIR="./data"
+
+./.venv/bin/python ./app/backend/prepdocs.py "$DATA_DIR" --verbose $additionalArgs

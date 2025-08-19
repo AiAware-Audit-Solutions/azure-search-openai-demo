@@ -1,4 +1,6 @@
 import logging
+import os
+import re
 from typing import Optional
 
 from azure.core.credentials import AzureKeyCredential
@@ -10,8 +12,61 @@ from .listfilestrategy import File, ListFileStrategy
 from .mediadescriber import ContentUnderstandingDescriber
 from .searchmanager import SearchManager, Section
 from .strategy import DocumentAction, SearchInfo, Strategy
+from .page import Page
 
 logger = logging.getLogger("scripts")
+
+METADATA_FIELDS = [
+    "organization_name",
+    "organization_acronyms",
+    "type",
+    "project_objectives",
+    "project_scope",
+    "findings",
+    "recommendations",
+    "risks_identified",
+    "conclusion",
+]
+
+
+def extract_metadata(file: File, pages: list[Page]) -> dict[str, str]:
+    text = "\n".join(page.text for page in pages)
+    metadata: dict[str, str] = {}
+
+    org_path = os.path.dirname(file.content.name)
+    org_name = os.path.basename(org_path)
+    if org_name:
+        metadata["organization_name"] = org_name
+        metadata["organization_acronyms"] = "".join(
+            word[0].upper() for word in re.findall(r"[A-Za-z]+", org_name)
+        )
+
+    filename_lower = file.filename().lower()
+    if "audit" in filename_lower:
+        metadata["type"] = "audit"
+    elif "evaluation" in filename_lower:
+        metadata["type"] = "evaluation"
+    elif "risk" in filename_lower and "plan" in filename_lower:
+        metadata["type"] = "risk-based plan"
+    elif "review" in filename_lower:
+        metadata["type"] = "review"
+    else:
+        metadata["type"] = "other"
+
+    patterns = {
+        "project_objectives": r"(?i)objectives?:\s*(.*)",
+        "project_scope": r"(?i)scope:\s*(.*)",
+        "findings": r"(?i)findings?:\s*(.*)",
+        "recommendations": r"(?i)recommendations?:\s*(.*)",
+        "risks_identified": r"(?i)risks? identified:\s*(.*)",
+        "conclusion": r"(?i)conclusion:\s*(.*)",
+    }
+    for key, pattern in patterns.items():
+        match = re.search(pattern, text)
+        if match:
+            metadata[key] = match.group(1).strip()
+
+    return metadata
 
 
 async def parse_file(
@@ -27,11 +82,13 @@ async def parse_file(
         return []
     logger.info("Ingesting '%s'", file.filename())
     pages = [page async for page in processor.parser.parse(content=file.content)]
+    metadata = extract_metadata(file, pages)
     logger.info("Splitting '%s' into sections", file.filename())
     if image_embeddings:
         logger.warning("Each page will be split into smaller chunks of text, but images will be of the entire page.")
     sections = [
-        Section(split_page, content=file, category=category) for split_page in processor.splitter.split_pages(pages)
+        Section(split_page, content=file, category=category, tags=metadata)
+        for split_page in processor.splitter.split_pages(pages)    
     ]
     return sections
 
@@ -54,6 +111,7 @@ class FileStrategy(Strategy):
         search_field_name_embedding: Optional[str] = None,
         use_acls: bool = False,
         category: Optional[str] = None,
+        metadata_field_names: Optional[list[str]] = None,
         use_content_understanding: bool = False,
         content_understanding_endpoint: Optional[str] = None,
     ):
@@ -68,6 +126,7 @@ class FileStrategy(Strategy):
         self.search_info = search_info
         self.use_acls = use_acls
         self.category = category
+        self.metadata_field_names = metadata_field_names or METADATA_FIELDS
         self.use_content_understanding = use_content_understanding
         self.content_understanding_endpoint = content_understanding_endpoint
 
@@ -80,6 +139,7 @@ class FileStrategy(Strategy):
             self.embeddings,
             field_name_embedding=self.search_field_name_embedding,
             search_images=self.image_embeddings is not None,
+            metadata_field_names=self.metadata_field_names,
         )
 
     async def setup(self):
@@ -102,7 +162,9 @@ class FileStrategy(Strategy):
             files = self.list_file_strategy.list()
             async for file in files:
                 try:
-                    sections = await parse_file(file, self.file_processors, self.category, self.image_embeddings)
+                    sections = await parse_file(
+                        file, self.file_processors, self.category, self.image_embeddings
+                    )
                     if sections:
                         blob_sas_uris = await self.blob_manager.upload_blob(file)
                         blob_image_embeddings: Optional[list[list[float]]] = None

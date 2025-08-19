@@ -41,14 +41,20 @@ logger = logging.getLogger("scripts")
 
 
 class Section:
-    """
-    A section of a page that is stored in a search service. These sections are used as context by Azure OpenAI service
-    """
+    """A section of a page that is stored in a search service."""
 
-    def __init__(self, split_page: SplitPage, content: File, category: Optional[str] = None):
+
+    def __init__(
+        self,
+        split_page: SplitPage,
+        content: File,
+        category: Optional[str] = None,
+        tags: Optional[dict[str, str]] = None,
+    ):
         self.split_page = split_page
         self.content = content
         self.category = category
+        self.tags = tags or {}
 
 
 class SearchManager:
@@ -66,6 +72,7 @@ class SearchManager:
         embeddings: Optional[OpenAIEmbeddings] = None,
         field_name_embedding: Optional[str] = None,
         search_images: bool = False,
+        metadata_fields: Optional[list[str]] = None,
     ):
         self.search_info = search_info
         self.search_analyzer_name = search_analyzer_name
@@ -75,6 +82,7 @@ class SearchManager:
         self.embedding_dimensions = self.embeddings.open_ai_dimensions if self.embeddings else None
         self.field_name_embedding = field_name_embedding
         self.search_images = search_images
+        self.metadata_fields = metadata_fields or []
 
     async def create_index(self):
         logger.info("Checking whether search index %s exists...", self.search_info.index_name)
@@ -208,6 +216,10 @@ class SearchManager:
                         facetable=False,
                     ),
                 ]
+                for field in self.metadata_fields:
+                    fields.append(
+                        SimpleField(name=field, type="Edm.String", filterable=True, facetable=True)
+                    )
                 if self.use_acls:
                     fields.append(
                         SimpleField(
@@ -423,6 +435,7 @@ class SearchManager:
                         "id": f"{section.content.filename_to_id()}-page-{section_index + batch_index * MAX_BATCH_SIZE}",
                         "content": section.split_page.text,
                         "category": section.category,
+                        **section.tags,
                         "sourcepage": (
                             BlobManager.blob_image_name_from_file_page(
                                 filename=section.content.filename(),
