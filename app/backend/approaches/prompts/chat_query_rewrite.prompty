@@ -30,10 +30,10 @@ assistant:
 Summarize Cryptocurrency Market Dynamics from last year
 
 user:
-What are my health plans?
+What departments of the government were audited?
 
 assistant:
-Show available health plans
+Show government departments with audits
 
 {% for message in past_messages %}
 {{ message["role"] }}:
