@@ -1,6 +1,6 @@
 ---
 name: Chat
-description: Answer a question (with chat history) text and image sources.
+description: Answer a question (with chat history) using solely text sources.
 model:
     api: chat
 sample:
@@ -14,13 +14,13 @@ sample:
     text_sources:
         - "Unintended Consequences - Canada.ca.pdf#page=10: the new reporting requirements to file a T3 Trust Income Tax and Information Return (T3 return) did not come out of nowhere. What is a trust? A trust is a legal relationship in which one party (the settlor) transfers property to another (the trustee for the benefit of the beneficiaries). For most trusts, when the trust is created, the settlor provides the trustee with the terms or instructions on how to administer the trust, identifies the beneficiaries and then generally is no longer involved. What happens when a trust is a bare trust? https://www.canada.ca/en/taxpayers-ombudsperson/programs/reports-publications/special-reports/unintended-consequences-bare-trusts.html 10/857/28/25, 3:39 AM Unintended Consequences - Canada.ca Where a trust is a bare trust, the trustee generally holds legal title to the property but is unable to take any action without the direction from all of the beneficiaries. The Government of Canada introduced the new reporting requirements for all trusts, unless specific conditions are met."
         - "Unintended Consequences - Canada.ca.pdf#page=41: The CRA indicates that 'it is the responsibility of the parties involved in an arrangement to determine the true nature of their legal relationships and whether they give rise to a bare trust or other trust which would be subject to the new trust reporting rules.' Whether or not a particular arrangement is a trust or a bare trust depends on the specific facts of each situation, as well as the applicable law. In addition, the legal principles applicable to trust relationships vary depending on the relevant province or territory. The CRA also indicates: Under the law of equity in common law provinces, in very general terms, a trust is a fiduciary relationship that arises when legal ownership of property is separated from beneficial ownership. Under the Civil Code of Quebec, trust relationships may have different characteristics. The existence of a trust relationship may be inferred from evidence about what the parties intended, what they actually agreed to and how they conducted themselves. Therefore, the CRA advises taxpayers to seek legal counsel if they are unsure of whether their arrangement is a trust."
-        - "Unintended Consequences - Canada.ca.pdf#page=47:  Unintended Consequences - Canada.ca The term 'bare trust' is not defined in the Act. A 'trust' for the purposes of the Act is defined in subsection 104(1) of the Act. That subsection provides that, if the arrangement is one in which the trust can reasonably be considered to act as agent for all the beneficiaries under the trust with respect to all dealings with all of the trust's property and the trust is not a trust described in paragraphs (a) to (e.1) of the definition of 'trust' in subsection 108(1) of the Act, the arrangement is deemed not to be a trust for the purposes of the Act. These arrangements are generally known as 'bare trusts.' A trustee can reasonably be considered to act as agent for a beneficiary when the trustee has no significant powers or responsibilities, the trustee can take no action without instructions from that beneficiary and the trustee's only function is to hold legal title to the property."
+        - "Unintended Consequences - Canada.ca.pdf#page=47: Unintended Consequences - Canada.ca The term 'bare trust' is not defined in the Act. A 'trust' for the purposes of the Act is defined in subsection 104(1) of the Act. That subsection provides that, if the arrangement is one in which the trust can reasonably be considered to act as agent for all the beneficiaries under the trust with respect to all dealings with all of the trust's property and the trust is not a trust described in paragraphs (a) to (e.1) of the definition of 'trust' in subsection 108(1) of the Act, the arrangement is deemed not to be a trust for the purposes of the Act. These arrangements are generally known as 'bare trusts.' A trustee can reasonably be considered to act as agent for a beneficiary when the trustee has no significant powers or responsibilities, the trustee can take no action without instructions from that beneficiary and the trustee's only function is to hold legal title to the property."
 ---
 system:
 {% if override_prompt %}
 {{ override_prompt }}
 {% else %}
-You are a chat assistant that helps AiAware Inc clients who are expert auditors. There are six major categories, Audits, Evaluations, Policies, Directives, Standards and Frameworks. Identify each document and do not mix sources when answering questions, unless it is specified. 
+Assistant acts as AiAware Inc’s auditing specialist, giving concise, source‑backed answers to client questions about government policies, past audits, and evaluations.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
 If the question is not in English, answer in the language used in the question.
 Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brackets to reference the source, for example [info1.txt]. Don't combine sources, list each source separately, for example [info1.txt][info2.pdf].
@@ -30,9 +30,9 @@ Each source has a name followed by colon and the actual information, always incl
 {% if include_follow_up_questions %}
 Generate 3 very brief follow-up questions that the user would likely ask next.
 Enclose the follow-up questions in double angle brackets. Example:
-<<Are there exclusions for prescriptions?>>
-<<Which pharmacies can be ordered from?>>
-<<What is the limit for over-the-counter medication?>>
+<<Where can I review the full audit report?>>
+<<When was the related policy last updated?>>
+<<Which agency oversees compliance with this finding?>>
 Do not repeat questions that have already been asked.
 Make sure the last question ends with ">>".
 {% endif %}
