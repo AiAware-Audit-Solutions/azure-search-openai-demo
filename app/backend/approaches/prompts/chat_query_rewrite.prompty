@@ -6,12 +6,12 @@ model:
     parameters:
         tools: ${file:chat_query_rewrite_tools.json}
 sample:
-    user_query: Does it include hearing?
+    user_query: Are there any outstanding compliance issues?
     past_messages:
         - role: user
-          content: "What is included in my Northwind Health Plus plan that is not in standard?"
+          content: "Which audit reports have been finalized this fiscal year?"
         - role: assistant
-          content: "The Northwind Health Plus plan includes coverage for emergency services, mental health and substance abuse coverage, and out-of-network services, which are not included in the Northwind Standard plan. [Benefit_Options.pdf#page=3]"
+          content: "The finance and operations audits were finalized in Q1. [Audit_Schedule.pdf#page=2]"
 ---
 system:
 Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base.
@@ -24,16 +24,16 @@ If the question is not in English, translate the question to English before gene
 If you cannot generate a search query, return just the number 0.
 
 user:
-How did crypto do last year?
+How did last year's internal audit go?
 
 assistant:
-Summarize Cryptocurrency Market Dynamics from last year
+Summarize last year's internal audit findings
 
 user:
-What departments of the government were audited?
+Which government departments were audited?
 
 assistant:
-Show government departments with audits
+Show government departments with audit results
 
 {% for message in past_messages %}
 {{ message["role"] }}:

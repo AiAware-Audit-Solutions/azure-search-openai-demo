@@ -8,7 +8,7 @@
             "properties": {
                 "search_query": {
                     "type": "string",
-                    "description": "Query string to retrieve documents from azure search eg: 'AiAware Audit Solutions'"
+                    "description": "Query string to retrieve documents from azure search eg: 'internal audit report 2024'"
                 }
             },
             "required": ["search_query"]
