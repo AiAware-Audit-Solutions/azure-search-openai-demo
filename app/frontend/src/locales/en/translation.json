@@ -39,7 +39,7 @@
     "defaultExamples": {
         "1": "What are some common trends amoung audits in 2025?",
         "2": "What audits were performed on the Canadian Revenue Agency?",
-        "3": "What policies took effect in the last month ?",
+        "3": "What policies took effect in the last month?",
         "placeholder": "Type a new question (e.g. steps for conducting an internal audit?)"
     },
     "askTitle": "Ask Away",

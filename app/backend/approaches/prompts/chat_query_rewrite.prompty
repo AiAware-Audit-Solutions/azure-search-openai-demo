@@ -11,7 +11,7 @@ sample:
         - role: user
           content: "Which audit reports have been finalized this fiscal year?"
         - role: assistant
-          content: "The finance and operations audits were finalized in Q1. [Audit_Schedule.pdf#page=2]"
+          content: "The finance and operations audits were finalized in Q1. [Audit of Occupational Health and Safety.pdf#page=2]"
 ---
 system:
 Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base.
